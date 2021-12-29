@@ -33,8 +33,9 @@ public class Main {
         }
 
         Scanner in = new Scanner(System.in);
-        int input = in.nextInt();
-        input -= 1;
+//        int input = in.nextInt();
+//        input -= 1;
+        int input = 1;
         if (input >= tree.keySet().size()) {
             System.out.println("ERROR, choose valid date");
             return null;

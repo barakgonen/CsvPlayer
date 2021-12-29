@@ -13,9 +13,10 @@ import java.util.stream.Collectors;
 public class RawSensorData {
     private File inputFile;
     private String sensorName;
+    private ArrayList<SimpleField> fields;
+
     private HashMap<String, ArrayList<String>> keyToValues;
     private ArrayList<HashMap<String, String>> updatesList;
-
 
     public RawSensorData(File file) {
         this.inputFile = file;
@@ -23,6 +24,7 @@ public class RawSensorData {
     }
 
     private void initializeData() {
+        this.fields = new ArrayList<>();
         this.sensorName = inputFile.getName().substring(0, inputFile.getName().indexOf('.'));
         this.keyToValues = new HashMap<>();
         this.updatesList = new ArrayList<>();
@@ -32,6 +34,7 @@ public class RawSensorData {
             bufferedReader = new BufferedReader(new FileReader(inputFile));
             lines = bufferedReader.lines().collect(Collectors.toCollection(ArrayList::new));
             Arrays.stream(lines.get(0).split(",")).forEach(s -> keyToValues.put(s, new ArrayList<>()));
+            Arrays.stream(lines.get(0).split(",")).forEach(s -> fields.add(new SimpleField(s)));
             for (int i = 1; i < lines.size(); i++) {
                 List<String> splitedRow = List.of(lines.get(i).split(",").clone());
                 for (int j = 0; j < keyToValues.keySet().size(); j++) {
