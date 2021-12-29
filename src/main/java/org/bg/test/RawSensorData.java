@@ -14,8 +14,8 @@ public class RawSensorData {
     private File inputFile;
     private String sensorName;
     private ArrayList<SimpleField> fields;
+    private int numberOfUpdates;
 
-    private HashMap<String, ArrayList<String>> keyToValues;
     private ArrayList<HashMap<String, String>> updatesList;
 
     public RawSensorData(File file) {
@@ -26,33 +26,23 @@ public class RawSensorData {
     private void initializeData() {
         this.fields = new ArrayList<>();
         this.sensorName = inputFile.getName().substring(0, inputFile.getName().indexOf('.'));
-        this.keyToValues = new HashMap<>();
         this.updatesList = new ArrayList<>();
         BufferedReader bufferedReader;
         ArrayList<String> lines;
         try {
             bufferedReader = new BufferedReader(new FileReader(inputFile));
             lines = bufferedReader.lines().collect(Collectors.toCollection(ArrayList::new));
-            Arrays.stream(lines.get(0).split(",")).forEach(s -> keyToValues.put(s, new ArrayList<>()));
             Arrays.stream(lines.get(0).split(",")).forEach(s -> fields.add(new SimpleField(s)));
             for (int i = 1; i < lines.size(); i++) {
                 List<String> splitedRow = List.of(lines.get(i).split(",").clone());
-                for (int j = 0; j < keyToValues.keySet().size(); j++) {
-                    keyToValues.get(keyToValues.keySet().toArray()[j]).add(splitedRow.get(j));
+                for (int j = 0; j < fields.size(); j++) {
+                    fields.get(j).addField(splitedRow.get(j));
                 }
             }
-            for (int i = 0; i < keyToValues.get(keyToValues.keySet().stream().findFirst().get()).size(); i++) {
-                updatesList.add(specificKeyValueExtractor(i));
-            }
+            numberOfUpdates = lines.size() - 1;
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private HashMap<String, String> specificKeyValueExtractor(int specificUpdate) {
-        HashMap<String, String> specificKeyValue = new HashMap<>();
-        keyToValues.forEach((key, value) -> specificKeyValue.put(key, value.get(specificUpdate)));
-        return specificKeyValue;
     }
 
     public String getSensorName() {
@@ -60,6 +50,15 @@ public class RawSensorData {
     }
 
     public ArrayList<HashMap<String, String>> getSensorUpdates() {
-        return updatesList;
+        ArrayList<HashMap<String, String>> allData = new ArrayList<>();
+
+        for (int i = 0; i < numberOfUpdates; i++) {
+            HashMap<String, String> singleUpdate = new HashMap<>();
+            for (int j = 0; j < fields.size(); j++) {
+                singleUpdate.put(fields.get(j).getFieldName(), fields.get(j).getNthReport(i));
+            }
+            allData.add(singleUpdate);
+        }
+        return allData;
     }
 }
