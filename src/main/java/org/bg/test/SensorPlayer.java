@@ -1,12 +1,17 @@
 package org.bg.test;
 
+import org.bg.test.sensors.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SensorPlayer {
     private RawSensorData rawSensorData;
+    private ArrayList<AbstractTarget> timeRangeScenario;
 
     public SensorPlayer(RawSensorData rawSensorData) {
         this.rawSensorData = rawSensorData;
+        this.timeRangeScenario = new ArrayList<>();
     }
 
     public void play() {
@@ -14,24 +19,32 @@ public class SensorPlayer {
         for (HashMap<String, String> update : rawSensorData.getSensorUpdates()) {
             switch (rawSensorData.getSensorName()) {
                 case "A":
-                    aTarget a = new aTarget(update);
-                    System.out.println(a);
+                    timeRangeScenario.add(new aTarget(update));
                     break;
                 case "AB":
-                    abTarget ab = new abTarget(update);
-                    System.out.println(ab);
+                    timeRangeScenario.add(new abTarget(update));
                     break;
                 case "AIS":
-                    aisTarget ais = new aisTarget(update);
-                    System.out.println(ais);
+                    timeRangeScenario.add(new aisTarget(update));
                     break;
                 case "GPS":
-                    gpsTarget gps = new gpsTarget(update);
-                    System.out.println(gps);
+                    timeRangeScenario.add(new gpsTarget(update));
                     break;
                 default:
                     break;
             }
         }
+
+        long lut = timeRangeScenario.get(0).getMillis();
+        for (AbstractTarget target : timeRangeScenario) {
+            long diff = Math.abs(lut - target.getMillis());
+            try {
+                Thread.sleep(diff);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(target);
+        }
+
     }
 }

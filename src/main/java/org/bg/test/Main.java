@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
@@ -35,7 +37,7 @@ public class Main {
         Scanner in = new Scanner(System.in);
 //        int input = in.nextInt();
 //        input -= 1;
-        int input = 1;
+        int input = 0;
         if (input >= tree.keySet().size()) {
             System.out.println("ERROR, choose valid date");
             return null;
@@ -63,10 +65,13 @@ public class Main {
                     rawSensorsData.add(rawSensorData);
                 });
 
+                ExecutorService executorService = Executors.newFixedThreadPool(tree.size());
                 System.out.println("Found: " + rawSensorsData.size() + " reporting sensors, now starting to play them");
                 Collection<SensorPlayer> sensorsPlayer = new ArrayList<>();
                 rawSensorsData.forEach(rawSensorData -> sensorsPlayer.add(new SensorPlayer(rawSensorData)));
-                sensorsPlayer.forEach(SensorPlayer::play);
+                sensorsPlayer.forEach(sensorPlayer -> executorService.submit(sensorPlayer::play));
+
+                executorService.shutdown();
             }
         }
 

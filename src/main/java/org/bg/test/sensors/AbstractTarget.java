@@ -1,4 +1,4 @@
-package org.bg.test;
+package org.bg.test.sensors;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,11 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class aisTarget {
-    private String timeStamp;
-    private String mmsi;
+public abstract class AbstractTarget {
+    protected long millis;
 
-    public aisTarget(HashMap<String, String> keyValue) {
+    public AbstractTarget(HashMap<String, String> keyValue) {
         HashMap<String, Method> nameToMethod = new HashMap<>();
         Arrays.stream(this.getClass().getDeclaredMethods()).forEach(method -> {
             nameToMethod.put(method.getName(), method);
@@ -23,21 +22,12 @@ public class aisTarget {
                 e.printStackTrace();
             }
         });
+        initializeKeyFields();
     }
 
-    public void settimestamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
+    public abstract void initializeKeyFields();
 
-    public void setmmsi(String mmsi) {
-        this.mmsi = mmsi;
-    }
-
-    @Override
-    public String toString() {
-        return "aisTarget{" +
-                "timeStamp='" + timeStamp + '\'' +
-                ", mmsi='" + mmsi + '\'' +
-                '}';
+    public long getMillis() {
+        return millis;
     }
 }

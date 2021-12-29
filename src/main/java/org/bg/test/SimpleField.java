@@ -1,7 +1,6 @@
 package org.bg.test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class SimpleField {
     private String fieldName;
@@ -18,10 +17,6 @@ public class SimpleField {
 
     public String getFieldName() {
         return fieldName;
-    }
-
-    public int numberOfReports() {
-        return reports.size();
     }
 
     public String getNthReport(int n) {

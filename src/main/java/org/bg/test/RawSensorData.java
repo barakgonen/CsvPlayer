@@ -16,8 +16,6 @@ public class RawSensorData {
     private ArrayList<SimpleField> fields;
     private int numberOfUpdates;
 
-    private ArrayList<HashMap<String, String>> updatesList;
-
     public RawSensorData(File file) {
         this.inputFile = file;
         initializeData();
@@ -26,7 +24,6 @@ public class RawSensorData {
     private void initializeData() {
         this.fields = new ArrayList<>();
         this.sensorName = inputFile.getName().substring(0, inputFile.getName().indexOf('.'));
-        this.updatesList = new ArrayList<>();
         BufferedReader bufferedReader;
         ArrayList<String> lines;
         try {
