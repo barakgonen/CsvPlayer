@@ -1,9 +1,10 @@
-package org.bg.test.sensors;
+package org.bg.test.sensors.generated;
 
 import com.opencsv.bean.CsvBindByPosition;
+import org.bg.test.sensors.AbstractSensorInputPojo;
 
-// This class represents A target report, it's fields must be the same as CSV's header
 public class PaTargetReport extends AbstractSensorInputPojo {
+
     @CsvBindByPosition(position = 1)
     private String id;
     @CsvBindByPosition(position = 2)
@@ -16,6 +17,10 @@ public class PaTargetReport extends AbstractSensorInputPojo {
     private String lon;
     @CsvBindByPosition(position = 6)
     private String vel;
+
+    public static String getSensorName() {
+        return "A";
+    }
 
     @Override
     public String toString() {

@@ -25,6 +25,7 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
     implementation group: 'com.opencsv', name: 'opencsv', version: '5.5.2'
+    implementation 'org.reflections:reflections:0.10.2'
 
 }
 

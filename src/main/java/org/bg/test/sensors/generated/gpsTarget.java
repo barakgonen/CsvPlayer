@@ -1,8 +1,10 @@
-package org.bg.test.sensors;
+package org.bg.test.sensors.generated;
 
 import com.opencsv.bean.CsvBindByPosition;
+import org.bg.test.sensors.AbstractSensorInputPojo;
 
 public class gpsTarget extends AbstractSensorInputPojo {
+
     @CsvBindByPosition(position = 1)
     private String id;
     @CsvBindByPosition(position = 2)
@@ -13,6 +15,10 @@ public class gpsTarget extends AbstractSensorInputPojo {
     private String lat;
     @CsvBindByPosition(position = 5)
     private String lon;
+
+    public static String getSensorName() {
+        return "GPS";
+    }
 
     @Override
     public String toString() {
