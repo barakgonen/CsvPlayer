@@ -1,9 +1,7 @@
 package org.bg.test;
 
-import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.bg.test.sensors.AbstractSensorInputPojo;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -12,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvParser<S extends AbstractSensorInputPojo> {
+public class CsvParser<S> {
     private List<S> csvList;
     private Class<S> parsingType;
     private String inputFilePath;
@@ -20,6 +18,7 @@ public class CsvParser<S extends AbstractSensorInputPojo> {
     public CsvParser(Class<S> inputSensorType, String inputFilePath) {
         this.parsingType = inputSensorType;
         this.inputFilePath = inputFilePath;
+        this.csvList = new ArrayList<>();
     }
 
     public List<S> getRawData() {
@@ -30,16 +29,15 @@ public class CsvParser<S extends AbstractSensorInputPojo> {
     }
 
     private void initializeReader() {
-        ColumnPositionMappingStrategy ms = new ColumnPositionMappingStrategy();
-        ms.setType(this.parsingType);
         try {
             Reader reader = Files.newBufferedReader(Paths.get(inputFilePath));
-            CsvToBean cb = new CsvToBeanBuilder(reader)
-                    .withType(this.parsingType)
-                    .withMappingStrategy(ms)
-                    .withSkipLines(1)
+
+            CsvToBean csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(parsingType)
+                    .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            csvList = cb.parse();
+            csvToBean.parse().forEach(o -> csvList.add(parsingType.cast(o)));
+
         } catch (IOException e) {
             e.printStackTrace();
         }

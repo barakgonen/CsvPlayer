@@ -1,21 +1,22 @@
 package org.bg.test.sensors.generated;
 
-import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvBindByName;
 import org.bg.test.sensors.AbstractSensorInputPojo;
 
-public class AbTargetReport extends AbstractSensorInputPojo {
-
-    @CsvBindByPosition(position = 1)
+public class AbTargetReport implements AbstractSensorInputPojo {
+    @CsvBindByName
+    private Long timeStamp;
+    @CsvBindByName
     private String id;
-    @CsvBindByPosition(position = 2)
+    @CsvBindByName
     private String uuid;
-    @CsvBindByPosition(position = 3)
+    @CsvBindByName
     private String size;
-    @CsvBindByPosition(position = 4)
+    @CsvBindByName
     private String bearing;
-    @CsvBindByPosition(position = 5)
+    @CsvBindByName
     private String lat;
-    @CsvBindByPosition(position = 6)
+    @CsvBindByName
     private String lon;
 
     public static String getSensorName() {
@@ -25,7 +26,7 @@ public class AbTargetReport extends AbstractSensorInputPojo {
     @Override
     public String toString() {
         return "abTarget{" +
-                super.toString() +
+                "timestamp= " + timeStamp +
                 ", id='" + id + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", size='" + size + '\'' +
@@ -33,5 +34,10 @@ public class AbTargetReport extends AbstractSensorInputPojo {
                 ", lat='" + lat + '\'' +
                 ", lon='" + lon + '\'' +
                 '}';
+    }
+
+    @Override
+    public long getMillis() {
+        return timeStamp;
     }
 }

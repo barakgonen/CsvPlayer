@@ -16,7 +16,7 @@ public class Utils {
         Reflections reflections = new Reflections(GENERATED_SENSORS_PACKAGE);
         reflections.getSubTypesOf(AbstractSensorInputPojo.class).forEach(aClass -> {
             try {
-                nameToClass.put((String) aClass.getDeclaredMethods()[1].invoke(aClass), aClass);
+                nameToClass.put((String) aClass.getDeclaredMethods()[aClass.getDeclaredMethods().length - 1].invoke(aClass), aClass);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
