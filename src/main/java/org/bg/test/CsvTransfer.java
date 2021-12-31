@@ -8,13 +8,13 @@ import java.util.List;
 public class CsvTransfer {
     private List<AbstractSensorInputPojo> csvList;
 
-    public void setCsvList(List<AbstractSensorInputPojo> csvList) {
-        this.csvList = csvList;
-    }
-
     public List<AbstractSensorInputPojo> getCsvList() {
         if (csvList != null)
             return csvList;
         return new ArrayList<>();
+    }
+
+    public void setCsvList(List<AbstractSensorInputPojo> csvList) {
+        this.csvList = csvList;
     }
 }

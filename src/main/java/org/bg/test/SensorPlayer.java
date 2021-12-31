@@ -1,6 +1,6 @@
 package org.bg.test;
 
-import org.bg.test.sensors.*;
+import org.bg.test.sensors.AbstractSensorInputPojo;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,7 @@ public class SensorPlayer<S extends AbstractSensorInputPojo> {
 
     public void play() {
         System.out.println("Starting to play sensor: " + rawSensorData.getSensorName());
-        for (AbstractSensorInputPojo b : rawSensorData.getSensorUpdates()) {
-            timeRangeScenario.add((S)b);
-        }
+        timeRangeScenario.addAll(rawSensorData.getSensorUpdates());
 
         long lut = timeRangeScenario.get(0).getMillis();
         for (AbstractSensorInputPojo target : timeRangeScenario) {

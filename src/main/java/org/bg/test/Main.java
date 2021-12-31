@@ -3,7 +3,10 @@ package org.bg.test;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.bg.test.sensors.*;
+import org.bg.test.sensors.AbTargetReport;
+import org.bg.test.sensors.AisTargetReport;
+import org.bg.test.sensors.PaTargetReport;
+import org.bg.test.sensors.gpsTarget;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,17 +85,17 @@ public class Main {
 
                     try {
                         Reader reader = Files.newBufferedReader(Paths.get(file.getPath()));
-                                            CsvToBean cb = new CsvToBeanBuilder(reader)
-                            .withType(nameToClass.get(sensorName))
-                            .withMappingStrategy(ms)
-                            .withSkipLines(1)
-                            .build();
+                        CsvToBean cb = new CsvToBeanBuilder(reader)
+                                .withType(nameToClass.get(sensorName))
+                                .withMappingStrategy(ms)
+                                .withSkipLines(1)
+                                .build();
 
-                    csvTransfer.setCsvList(cb.parse());
-                    reader.close();
+                        csvTransfer.setCsvList(cb.parse());
+                        reader.close();
 
-                    RawSensorData rawSensorData = new RawSensorData(sensorName, csvTransfer.getCsvList());
-                    rawSensorsData.add(rawSensorData);
+                        RawSensorData rawSensorData = new RawSensorData(sensorName, csvTransfer.getCsvList());
+                        rawSensorsData.add(rawSensorData);
 
                     } catch (IOException e) {
                         e.printStackTrace();
