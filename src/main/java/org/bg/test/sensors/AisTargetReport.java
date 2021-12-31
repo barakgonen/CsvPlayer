@@ -2,7 +2,7 @@ package org.bg.test.sensors;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class aisTarget extends CsvBean {
+public class AisTargetReport extends AbstractSensorInputPojo {
     @CsvBindByPosition(position = 1)
     private String mmsi;
 

@@ -2,7 +2,7 @@ package org.bg.test.sensors;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-public class gpsTarget extends CsvBean {
+public class gpsTarget extends AbstractSensorInputPojo {
     @CsvBindByPosition(position = 1)
     private String id;
     @CsvBindByPosition(position = 2)

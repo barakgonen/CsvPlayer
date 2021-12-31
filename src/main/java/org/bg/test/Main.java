@@ -6,7 +6,6 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import org.bg.test.sensors.*;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.*;
@@ -58,9 +57,9 @@ public class Main {
         HashMap<String, Class<?>> nameToClass = new HashMap<>();
 
 
-        nameToClass.put("AB", new abTarget().getClass());
-        nameToClass.put("AIS", new aisTarget().getClass());
-        nameToClass.put("A", new aTarget().getClass());
+        nameToClass.put("AB", new AbTargetReport().getClass());
+        nameToClass.put("AIS", new AisTargetReport().getClass());
+        nameToClass.put("A", new PaTargetReport().getClass());
         nameToClass.put("GPS", new gpsTarget().getClass());
 
         String filesDir = "/home/barakg/IdeaProjects/CsvPlayer/csvFiles/";

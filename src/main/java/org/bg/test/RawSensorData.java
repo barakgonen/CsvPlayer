@@ -1,16 +1,15 @@
 package org.bg.test;
 
-import org.bg.test.sensors.CsvBean;
+import org.bg.test.sensors.AbstractSensorInputPojo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RawSensorData {
 
-    private List<CsvBean> rawData;
+    private List<AbstractSensorInputPojo> rawData;
     private String sensorName;
 
-    public RawSensorData(String sensorName, List<CsvBean> rawData) {
+    public RawSensorData(String sensorName, List<AbstractSensorInputPojo> rawData) {
         this.sensorName = sensorName;
         this.rawData = rawData;
     }
@@ -19,7 +18,7 @@ public class RawSensorData {
         return sensorName;
     }
 
-    public List<CsvBean> getSensorUpdates() {
+    public List<AbstractSensorInputPojo> getSensorUpdates() {
         return rawData;
     }
 }
