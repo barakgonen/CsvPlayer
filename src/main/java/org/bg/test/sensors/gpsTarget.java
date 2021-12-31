@@ -1,50 +1,21 @@
 package org.bg.test.sensors;
 
-import java.util.HashMap;
+import com.opencsv.bean.CsvBindByPosition;
 
-public class gpsTarget extends AbstractTarget {
-    private String timeStamp;
+public class gpsTarget extends CsvBean {
+    @CsvBindByPosition(position = 1)
     private String id;
+    @CsvBindByPosition(position = 2)
     private String uuid;
+    @CsvBindByPosition(position = 3)
     private String size;
+    @CsvBindByPosition(position = 4)
     private String lat;
+    @CsvBindByPosition(position = 5)
     private String lon;
-
-    public gpsTarget(HashMap<String, String> keyValue) {
-        super(keyValue);
-    }
-
-    @Override
-    public void initializeKeyFields() {
-        millis = Long.parseLong(timeStamp);
-    }
-
-    public void settimestamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public void setid(String id) {
-        this.id = id;
-    }
-
-    public void setuuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setsize(String size) {
-        this.size = size;
-    }
-
-    public void setlat(String lat) {
-        this.lat = lat;
-    }
-
-    public void setlon(String lon) {
-        this.lon = lon;
-    }
 
     @Override
     public String toString() {
-        return "gpsTarget{" + "timeStamp='" + timeStamp + '\'' + ", id='" + id + '\'' + ", uuid='" + uuid + '\'' + ", size='" + size + '\'' + ", lat='" + lat + '\'' + ", lon='" + lon + '\'' + '}';
+        return "gpsTarget{" + super.toString() + '\'' + ", id='" + id + '\'' + ", uuid='" + uuid + '\'' + ", size='" + size + '\'' + ", lat='" + lat + '\'' + ", lon='" + lon + '\'' + '}';
     }
 }

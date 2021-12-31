@@ -1,58 +1,25 @@
 package org.bg.test.sensors;
 
-import java.util.HashMap;
+import com.opencsv.bean.CsvBindByPosition;
 
-public class abTarget extends AbstractTarget {
-    private String timeStamp;
+public class abTarget extends CsvBean {
+    @CsvBindByPosition(position = 1)
     private String id;
+    @CsvBindByPosition(position = 2)
     private String uuid;
+    @CsvBindByPosition(position = 3)
     private String size;
+    @CsvBindByPosition(position = 4)
     private String bearing;
+    @CsvBindByPosition(position = 5)
     private String lat;
+    @CsvBindByPosition(position = 6)
     private String lon;
-
-    public abTarget(HashMap<String, String> keyValue) {
-        super(keyValue);
-    }
-
-    @Override
-    public void initializeKeyFields() {
-        millis = Long.parseLong(timeStamp);
-    }
-
-
-    public void settimestamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public void setid(String id) {
-        this.id = id;
-    }
-
-    public void setuuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public void setsize(String size) {
-        this.size = size;
-    }
-
-    public void setbearing(String bearing) {
-        this.bearing = bearing;
-    }
-
-    public void setlat(String lat) {
-        this.lat = lat;
-    }
-
-    public void setlon(String lon) {
-        this.lon = lon;
-    }
 
     @Override
     public String toString() {
         return "abTarget{" +
-                "timeStamp='" + timeStamp + '\'' +
+                super.toString() +
                 ", id='" + id + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", size='" + size + '\'' +

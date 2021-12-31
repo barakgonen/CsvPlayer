@@ -5,9 +5,9 @@ import org.bg.test.sensors.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SensorPlayer {
+public class SensorPlayer<S extends CsvBean> {
     private RawSensorData rawSensorData;
-    private ArrayList<AbstractTarget> timeRangeScenario;
+    private ArrayList<CsvBean> timeRangeScenario;
 
     public SensorPlayer(RawSensorData rawSensorData) {
         this.rawSensorData = rawSensorData;
@@ -16,27 +16,12 @@ public class SensorPlayer {
 
     public void play() {
         System.out.println("Starting to play sensor: " + rawSensorData.getSensorName());
-        for (HashMap<String, String> update : rawSensorData.getSensorUpdates()) {
-            switch (rawSensorData.getSensorName()) {
-                case "A":
-                    timeRangeScenario.add(new aTarget(update));
-                    break;
-                case "AB":
-                    timeRangeScenario.add(new abTarget(update));
-                    break;
-                case "AIS":
-                    timeRangeScenario.add(new aisTarget(update));
-                    break;
-                case "GPS":
-                    timeRangeScenario.add(new gpsTarget(update));
-                    break;
-                default:
-                    break;
-            }
+        for (CsvBean b : rawSensorData.getSensorUpdates()) {
+            timeRangeScenario.add((S)b);
         }
 
         long lut = timeRangeScenario.get(0).getMillis();
-        for (AbstractTarget target : timeRangeScenario) {
+        for (CsvBean target : timeRangeScenario) {
             long diff = Math.abs(lut - target.getMillis());
             try {
                 Thread.sleep(diff);

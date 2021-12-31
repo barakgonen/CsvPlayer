@@ -23,6 +23,9 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
+    // https://mvnrepository.com/artifact/com.opencsv/opencsv
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.5.2'
+
 }
 
 application {

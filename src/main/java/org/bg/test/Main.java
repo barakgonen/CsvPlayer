@@ -1,7 +1,14 @@
 package org.bg.test;
 
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.bg.test.sensors.*;
+
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -48,6 +55,14 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        HashMap<String, Class<?>> nameToClass = new HashMap<>();
+
+
+        nameToClass.put("AB", new abTarget().getClass());
+        nameToClass.put("AIS", new aisTarget().getClass());
+        nameToClass.put("A", new aTarget().getClass());
+        nameToClass.put("GPS", new gpsTarget().getClass());
+
         String filesDir = "/home/barakg/IdeaProjects/CsvPlayer/csvFiles/";
         HashMap<Path, Set<File>> tree = listFilesUsingFileWalkAndVisitor(filesDir);
         if (tree.keySet().size() < 1) {
@@ -61,8 +76,28 @@ public class Main {
                 }
 
                 tree.get(path).forEach(file -> {
-                    RawSensorData rawSensorData = new RawSensorData(file);
+                    String sensorName = file.getPath().substring(file.getPath().lastIndexOf("/") + 1, file.getPath().lastIndexOf('.'));
+                    CsvTransfer csvTransfer = new CsvTransfer();
+                    ColumnPositionMappingStrategy ms = new ColumnPositionMappingStrategy();
+                    ms.setType(nameToClass.get(sensorName));
+
+                    try {
+                        Reader reader = Files.newBufferedReader(Paths.get(file.getPath()));
+                                            CsvToBean cb = new CsvToBeanBuilder(reader)
+                            .withType(nameToClass.get(sensorName))
+                            .withMappingStrategy(ms)
+                            .withSkipLines(1)
+                            .build();
+
+                    csvTransfer.setCsvList(cb.parse());
+                    reader.close();
+
+                    RawSensorData rawSensorData = new RawSensorData(sensorName, csvTransfer.getCsvList());
                     rawSensorsData.add(rawSensorData);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 ExecutorService executorService = Executors.newFixedThreadPool(tree.size());
@@ -74,6 +109,5 @@ public class Main {
                 executorService.shutdown();
             }
         }
-
     }
 }

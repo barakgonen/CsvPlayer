@@ -1,57 +1,26 @@
 package org.bg.test.sensors;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
+import com.opencsv.bean.CsvBindByPosition;
 
 // This class represents A target report, it's fields must be the same as CSV's header
-public class aTarget extends AbstractTarget {
-    private String timeStamp;
+public class aTarget extends CsvBean {
+    @CsvBindByPosition(position = 1)
     private String id;
+    @CsvBindByPosition(position = 2)
     private String uuid;
+    @CsvBindByPosition(position = 3)
     private String size;
+    @CsvBindByPosition(position = 4)
     private String lat;
+    @CsvBindByPosition(position = 5)
     private String lon;
+    @CsvBindByPosition(position = 6)
     private String vel;
-
-    public aTarget(HashMap<String, String> keyValue) {
-        super(keyValue);
-    }
-
-    @Override
-    public void initializeKeyFields() {
-        millis = Long.parseLong(timeStamp);
-    }
-
-    public void settimestamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-    public void setid(String id) {
-        this.id = id;
-    }
-    public void setuuid(String uuid) {
-        this.uuid = uuid;
-    }
-    public void setsize(String size) {
-        this.size = size;
-    }
-    public void setlat(String lat) {
-        this.lat = lat;
-    }
-    public void setlon(String lon) {
-        this.lon = lon;
-    }
-    public void setvel(String vel) {
-        this.vel = vel;
-    }
 
     @Override
     public String toString() {
         return "aTarget{" +
-                "timeStamp='" + timeStamp + '\'' +
+                super.toString() +
                 ", id='" + id + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", size='" + size + '\'' +
