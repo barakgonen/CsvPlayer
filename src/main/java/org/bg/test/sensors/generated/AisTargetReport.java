@@ -13,6 +13,9 @@ public class AisTargetReport implements AbstractSensorInputPojo {
     public static String getSensorName() {
         return "AIS";
     }
+    public static String getHeader() {
+        return "timeStamp,mmsi";
+    }
 
     @Override
     public String toString() {

@@ -7,37 +7,59 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CsvParser<S> {
-    private List<S> csvList;
+    private ConcurrentLinkedDeque<S> rawDataQueue;
     private Class<S> parsingType;
     private String inputFilePath;
+    private AtomicBoolean finishIndicator;
+    private String sensorName;
+    private String promptColor;
 
-    public CsvParser(Class<S> inputSensorType, String inputFilePath) {
+    public CsvParser(Class<S> inputSensorType,
+                     String inputFilePath, ConcurrentLinkedDeque<S> rawDataQueue,
+                     AtomicBoolean finishIndicator) {
         this.parsingType = inputSensorType;
         this.inputFilePath = inputFilePath;
-        this.csvList = new ArrayList<>();
+        this.rawDataQueue = rawDataQueue;
+        this.finishIndicator = finishIndicator;
+        this.sensorName = Utils.fileNameToSensorName(inputFilePath.substring(inputFilePath.lastIndexOf('/') + 1));
+        this.promptColor = Constants.PROMPT_COLORS.get(this.sensorName);
     }
 
-    public List<S> getRawData() {
-        initializeReader();
-        if (csvList != null)
-            return csvList;
-        return new ArrayList<>();
-    }
-
-    private void initializeReader() {
+    public void startReadCsv() {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(inputFilePath));
-
             CsvToBean csvToBean = new CsvToBeanBuilder(reader)
                     .withType(parsingType)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
-            csvToBean.parse().forEach(o -> csvList.add(parsingType.cast(o)));
+            Iterator<Object> iterator = csvToBean.iterator();
 
+            int counter = 0;
+            while (iterator.hasNext()) {
+                rawDataQueue.add(parsingType.cast(iterator.next()));
+                counter++;
+                if (counter % 1000000 == 0)
+                    System.out.println(promptColor + "<CsvParser::startReadCsv()> parsing csv for sensor: "
+                            + sensorName + " so far, read: " + counter + " msgs");
+                while (rawDataQueue.size() > 200000) {
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            System.out.println(promptColor + "<CsvParser::startReadCsv()> Finished reading input csv file for sensor: "
+                    + sensorName + " totaly read: " + counter + " msgs");
+            reader.close();
+            this.finishIndicator.set(true);
+            System.out.println(promptColor + "<CsvParser::startReadCsv()> Set finish indicator to true for sensor: "
+                    + sensorName);
         } catch (IOException e) {
             e.printStackTrace();
         }

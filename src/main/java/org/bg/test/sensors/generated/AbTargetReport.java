@@ -22,6 +22,9 @@ public class AbTargetReport implements AbstractSensorInputPojo {
     public static String getSensorName() {
         return "AB";
     }
+    public static String getHeader() {
+        return "timeStamp,id,uuid,size,bearing,lat,lon";
+    }
 
     @Override
     public String toString() {

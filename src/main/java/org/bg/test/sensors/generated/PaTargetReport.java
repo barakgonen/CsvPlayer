@@ -22,6 +22,9 @@ public class PaTargetReport implements AbstractSensorInputPojo {
     public static String getSensorName() {
         return "A";
     }
+    public static String getHeader() {
+        return "timeStamp,id,uuid,size,lat,lon,vel";
+    }
 
     @Override
     public String toString() {

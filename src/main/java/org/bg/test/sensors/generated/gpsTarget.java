@@ -21,9 +21,20 @@ public class gpsTarget implements AbstractSensorInputPojo {
         return "GPS";
     }
 
+    public static String getHeader() {
+        return "timeStamp,id,uuid,size,lat,lon";
+    }
+
     @Override
     public String toString() {
-        return "gpsTarget{timeStamp=" + timeStamp + '\'' + ", id='" + id + '\'' + ", uuid='" + uuid + '\'' + ", size='" + size + '\'' + ", lat='" + lat + '\'' + ", lon='" + lon + '\'' + '}';
+        return "gpsTarget{" +
+                "timeStamp=" + timeStamp +
+                ", id='" + id + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", size='" + size + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lon='" + lon + '\'' +
+                '}';
     }
 
     @Override
