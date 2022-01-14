@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,8 +48,8 @@ public class Utils {
         Reflections reflections = new Reflections(GENERATED_SENSORS_PACKAGE);
         reflections.getSubTypesOf(AbstractSensorInputPojo.class).forEach(aClass -> {
             try {
-                sensorToHeader.put((String)Arrays.stream(aClass.getDeclaredMethods()).filter(method -> method.getName().contains("getSensorName")).findFirst().get().invoke(aClass),
-                        (String)Arrays.stream(aClass.getDeclaredMethods()).filter(method -> method.getName().contains("getHeader")).findFirst().get().invoke(aClass));
+                sensorToHeader.put((String) Arrays.stream(aClass.getDeclaredMethods()).filter(method -> method.getName().contains("getSensorName")).findFirst().get().invoke(aClass),
+                        (String) Arrays.stream(aClass.getDeclaredMethods()).filter(method -> method.getName().contains("getHeader")).findFirst().get().invoke(aClass));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -65,14 +68,14 @@ public class Utils {
             // do some bullshit
             for (int i = 0; i < length; i++) {
                 AtomicReference<String> line = new AtomicReference<>(
-                    INITIAL_TIME_STAMP + (DELAY_BETWEEN_REPORTS_FOR_SENSOR.get(sensorToGenerate) * i) + ",");
+                        INITIAL_TIME_STAMP + (DELAY_BETWEEN_REPORTS_FOR_SENSOR.get(sensorToGenerate) * i) + ",");
                 Arrays.stream(sensorToHeader.get(sensorToGenerate).split(",")).forEach(s -> {
-                    if (!s.equals("timeStamp")){
+                    if (!s.equals("timeStamp")) {
                         line.set(line.get() + s + ",");
                     }
 
                 });
-                dataLines.add(convertToCSV(line.get().substring(0, line.get().length() -1)));
+                dataLines.add(convertToCSV(line.get().substring(0, line.get().length() - 1)));
             }
             // write the file
 

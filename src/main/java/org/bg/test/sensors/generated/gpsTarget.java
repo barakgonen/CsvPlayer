@@ -3,7 +3,7 @@ package org.bg.test.sensors.generated;
 import com.opencsv.bean.CsvBindByName;
 import org.bg.test.sensors.AbstractSensorInputPojo;
 
-public class gpsTarget implements AbstractSensorInputPojo {
+public class gpsTarget implements AbstractSensorInputPojo, Comparable<AbstractSensorInputPojo>{
     @CsvBindByName
     private Long timeStamp;
     @CsvBindByName
@@ -40,5 +40,16 @@ public class gpsTarget implements AbstractSensorInputPojo {
     @Override
     public long getMillis() {
         return timeStamp;
+    }
+
+    @Override
+    public int compareTo(AbstractSensorInputPojo gpsTarget) {
+        if (timeStamp > gpsTarget.getMillis()) {
+            return 1;
+        } else if (timeStamp < gpsTarget.getMillis()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

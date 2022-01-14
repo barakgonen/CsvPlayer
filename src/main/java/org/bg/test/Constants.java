@@ -9,8 +9,7 @@ public class Constants {
     public static final long INITIAL_TIME_STAMP = 1641052800000L;
     public static final int DELAY_BETWEEN_REPORTS_IN_MILLIS = 1;
 
-    public static final HashMap<String, Integer> DELAY_BETWEEN_REPORTS_FOR_SENSOR = new HashMap<>()
-    {
+    public static final HashMap<String, Integer> DELAY_BETWEEN_REPORTS_FOR_SENSOR = new HashMap<>() {
         {
             put("A", DELAY_BETWEEN_REPORTS_IN_MILLIS);
             put("GPS", DELAY_BETWEEN_REPORTS_IN_MILLIS * 2);
@@ -25,8 +24,7 @@ public class Constants {
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
     public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
 
-    public static final HashMap<String, String> PROMPT_COLORS = new HashMap<>()
-    {
+    public static final HashMap<String, String> PROMPT_COLORS = new HashMap<>() {
         {
             put("ERROR", ANSI_RED_BACKGROUND);
             put("AIS", ANSI_BLACK_BACKGROUND);

@@ -2,25 +2,25 @@ package org.bg.test;
 
 import org.bg.test.sensors.AbstractSensorInputPojo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 
-/**
- * Syncronizer for specific sensor
- */
 public class SensorMessagesSyncronizer {
-    TreeSet<AbstractSensorInputPojo> syncronizedMessages;
+    private int numberOfLoops;
+    private ConcurrentLinkedQueue<AbstractSensorInputPojo> msgsInputStream;
+    private ConcurrentSkipListSet<AbstractSensorInputPojo> outputStream;
 
-    public SensorMessagesSyncronizer() {
-        this.syncronizedMessages = new TreeSet<>();
+    public SensorMessagesSyncronizer(ConcurrentLinkedQueue<AbstractSensorInputPojo> msgsInputStream,
+                                     ConcurrentSkipListSet<AbstractSensorInputPojo> outputStream) {
+        this.numberOfLoops = 0;
+        this.msgsInputStream = msgsInputStream;
+        this.outputStream = outputStream;
     }
 
-    public void addMessage(AbstractSensorInputPojo message) {
-        this.syncronizedMessages.add(message);
-    }
-
-    public Set<AbstractSensorInputPojo> getSyncronizedSensorMessages() {
-        return new HashSet<>(syncronizedMessages);
+    public void runAndMerge() {
+        numberOfLoops++;
+        while (!msgsInputStream.isEmpty()) {
+            outputStream.add(msgsInputStream.poll());
+        }
     }
 }
